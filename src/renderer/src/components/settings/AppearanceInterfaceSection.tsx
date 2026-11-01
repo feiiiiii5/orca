@@ -30,7 +30,7 @@ import type { UiLanguage } from '../../../../shared/ui-language'
 import { matchesSettingsSearch, normalizeSettingsSearchQuery } from './settings-search'
 import { usePluginLanguagePacks } from '@/store/plugin-language-packs'
 import {
-  AppearanceBrowseThemesLink,
+  AppearanceBrowseThemesButton,
   AppearanceThemeControl,
   AppearanceThemeSlotSelect
 } from './AppearanceThemeControl'
@@ -111,14 +111,16 @@ export function AppearanceInterfaceSection({
       >
         <SettingsRow
           label={themeLabel}
-          description={showThemeSlots ? <AppearanceBrowseThemesLink /> : undefined}
           control={
-            <AppearanceThemeControl
-              label={themeLabel}
-              settings={settings}
-              updateSettings={updateSettings}
-              applyTheme={applyTheme}
-            />
+            <div className="flex items-center gap-2">
+              {showThemeSlots ? <AppearanceBrowseThemesButton /> : null}
+              <AppearanceThemeControl
+                label={themeLabel}
+                settings={settings}
+                updateSettings={updateSettings}
+                applyTheme={applyTheme}
+              />
+            </div>
           }
         />
       </SearchableSetting>

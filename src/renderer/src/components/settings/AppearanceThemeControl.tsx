@@ -34,9 +34,10 @@ function browseThemesLabel(): string {
 }
 
 /** Opens the plugin catalog at its themes, installed and not. */
-export function AppearanceBrowseThemesLink(): React.JSX.Element {
+export function AppearanceBrowseThemesButton(): React.JSX.Element {
   return (
-    <Button variant="link" size="xs" onClick={() => requestPluginBrowse('themes')}>
+    <Button variant="outline" size="sm" onClick={() => requestPluginBrowse('themes')}>
+      <Store />
       {browseThemesLabel()}
     </Button>
   )
