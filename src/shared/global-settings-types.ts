@@ -462,8 +462,6 @@ export type GlobalSettings = GlobalSettingsBase & {
   agentHibernationIdleMs?: number
   /** Experimental: opt-in preview of the updated worktree-card layout and metadata behavior. */
   experimentalNewWorktreeCardStyle?: boolean
-  /** Experimental: fit tab widths on workspace return and inline rename, holding them through live title changes. */
-  experimentalFitTabsToTitles?: boolean
   /** Experimental: per-workspace on-demand environment recipes and setup surface. */
   experimentalEphemeralVms?: boolean
   /** Experimental (Windows): add WSL distros as hosts, each running its own Orca server. */
