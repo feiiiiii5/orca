@@ -1,5 +1,5 @@
 import type React from 'react'
-import { Loader2 } from 'lucide-react'
+import { Loader2, Store } from 'lucide-react'
 import type { GlobalSettings } from '../../../../shared/global-settings-types'
 import { pluginAppThemeSlotUpdate } from '../../../../shared/plugin-theme-settings'
 import { Button } from '../ui/button'
@@ -22,10 +22,30 @@ import {
   terminalThemeUpdate
 } from '../plugins/state/plugin-theme-apply'
 import { useCatalogAppThemes } from './use-catalog-app-themes'
+import { requestPluginBrowse } from '@/store/plugin-preview-request'
 
 type BuiltInTheme = GlobalSettings['theme']
 
 const BUILT_IN = 'built-in'
+const BROWSE_THEMES = 'browse-themes'
+
+function browseThemesLabel(): string {
+  return translate('auto.components.settings.AppearanceThemeControl.browseThemes', 'Browse themes')
+}
+
+/** Opens the plugin catalog at its themes, installed and not. */
+export function AppearanceBrowseThemesLink(): React.JSX.Element {
+  return (
+    <Button
+      variant="link"
+      size="xs"
+      className="h-auto p-0"
+      onClick={() => requestPluginBrowse('themes')}
+    >
+      {browseThemesLabel()}
+    </Button>
+  )
+}
 
 /** System, Dark or Light; the Light theme and Dark theme slots pick the colors for each. */
 export function AppearanceThemeControl({
@@ -79,7 +99,7 @@ export function AppearanceThemeSlotSelect({
 }): React.JSX.Element {
   const allThemes = usePluginThemes()
   const themes = allThemes.filter((theme) => theme.base === base)
-  const catalog = useCatalogAppThemes(base, allThemes)
+  const catalog = useCatalogAppThemes(base, allThemes, settings.pluginSystemEnabled === true)
   const pluginTerminalThemes = usePluginTerminalThemes()
   const selectedId = base === 'dark' ? settings.pluginAppThemeDark : settings.pluginAppThemeLight
   const active = themes.find((theme) => theme.id === selectedId)
@@ -102,6 +122,10 @@ export function AppearanceThemeSlotSelect({
           }
         }}
         onValueChange={(value) => {
+          if (value === BROWSE_THEMES) {
+            requestPluginBrowse('themes')
+            return
+          }
           if (catalog.pick(value)) {
             return
           }
@@ -163,6 +187,11 @@ export function AppearanceThemeSlotSelect({
               </SelectGroup>
             </>
           ) : null}
+          <SelectSeparator />
+          <SelectItem value={BROWSE_THEMES}>
+            <Store className="size-3.5" />
+            {browseThemesLabel()}
+          </SelectItem>
         </SelectContent>
       </Select>
       {catalog.installing ? (

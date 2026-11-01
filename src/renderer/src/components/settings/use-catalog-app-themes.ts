@@ -107,7 +107,9 @@ function useCatalogSnapshot(): {
  */
 export function useCatalogAppThemes(
   base: 'light' | 'dark',
-  installedThemes: readonly Pick<PluginThemeRegistration, 'pluginKey'>[]
+  installedThemes: readonly Pick<PluginThemeRegistration, 'pluginKey'>[],
+  /** Off with the plugin system: nothing is read and nothing is offered. */
+  enabled: boolean
 ): {
   themes: CatalogAppTheme[]
   /** True only for the first read; later reads keep showing what is known. */
@@ -122,10 +124,10 @@ export function useCatalogAppThemes(
   const { snapshot, loading, load } = useCatalogSnapshot()
   const themes = useMemo(
     () =>
-      snapshot
+      enabled && snapshot
         ? catalogAppThemes(snapshot, base, new Set(installedThemes.map((theme) => theme.pluginKey)))
         : [],
-    [snapshot, base, installedThemes]
+    [enabled, snapshot, base, installedThemes]
   )
   const [picked, setPicked] = useState<CatalogAppTheme | null>(null)
   // Why a ref: the install started in the same event reads the pick before it is state.
@@ -149,6 +151,9 @@ export function useCatalogAppThemes(
   const phase = picked ? install.phaseOf(picked.listing.pluginKey) : null
   // Why: reopening the picker is the retry, so a failed pick's message goes with it.
   const open = (): void => {
+    if (!enabled) {
+      return
+    }
     if (picked && phase?.kind === 'error') {
       install.dismiss(picked.listing.pluginKey)
     }
@@ -168,7 +173,7 @@ export function useCatalogAppThemes(
   }
   return {
     themes,
-    loading: loading && !snapshot,
+    loading: enabled && loading && !snapshot,
     open,
     pick,
     installing: phase?.kind === 'installing' ? picked : null,

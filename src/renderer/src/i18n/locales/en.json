@@ -13084,7 +13084,8 @@
           "useTerminalTheme": "Use its terminal colors",
           "moreThemes": "More themes",
           "moreThemesLoading": "Loading themes…",
-          "installingTheme": "Installing {{value0}}…"
+          "installingTheme": "Installing {{value0}}…",
+          "browseThemes": "Browse themes"
         },
         "AppearanceInterfaceSection": {
           "pluginIconTheme": {
