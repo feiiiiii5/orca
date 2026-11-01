@@ -84,7 +84,7 @@ export function useAppChromeLayout() {
   // Tasks/Landing keep sidebar-width chrome when open; creation suppresses stacked chrome.
   const stackedSidebarOpen =
     !workspaceChromeActive && !creationLayoutActive && showSidebar && sidebarOpen
-  // Creation retains only top-left chrome; workspaceChromeActive gates tabs/right controls.
+  // Creation retains sidebar chrome; workspaceChromeActive gates the workspace tabs.
   const leftTitlebarChromeLayout = resolveLeftTitlebarChromeLayout({
     workspaceChromeActive,
     stackedSidebarOpen,
@@ -138,7 +138,8 @@ export function useAppChromeLayout() {
     rightSidebarTab,
     shouldMountTerminalWorkbench,
     showSidebar,
-    showRightSidebarControls: !creationLayoutActive && canShowRightSidebarForView(activeView),
+    // Keep the pending composer in the same viewport as the workspace it hands off to.
+    showRightSidebarControls: canShowRightSidebarForView(activeView),
     showTitlebarAppName: settings?.showTitlebarAppName !== false,
     showTitlebarExpandButton: workspaceChromeActive && !hasTabBar && effectiveActiveTabExpanded,
     sidebarOpen,
