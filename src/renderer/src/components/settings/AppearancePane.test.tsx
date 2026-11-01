@@ -82,6 +82,9 @@ vi.mock('../ui/select', async () => {
       </button>
     ),
     SelectValue: () => null,
+    SelectGroup: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+    SelectLabel: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+    SelectSeparator: () => null,
     SelectContent: ({ children }: { children: React.ReactNode }) => (
       <div data-slot="select-content">{children}</div>
     ),
