@@ -25,6 +25,7 @@ import {
   UI_LANGUAGE_CHOICES
 } from '@/i18n/supported-languages'
 import { translate } from '@/i18n/i18n'
+import { isWebClientLocation } from '@/lib/web-client-location'
 import type { UiLanguage } from '../../../../shared/ui-language'
 import { matchesSettingsSearch, normalizeSettingsSearchQuery } from './settings-search'
 import { usePluginLanguagePacks } from '@/store/plugin-language-packs'
@@ -59,8 +60,8 @@ export function AppearanceInterfaceSection({
   const searchQuery = useAppStore((state) => state.settingsSearchQuery)
   const pluginLanguagePacks = usePluginLanguagePacks()
   const pluginIconThemes = usePluginIconThemes()
-  // Why the API, not installed themes: the slots also lead to more themes, so they show even with none.
-  const hasPluginHost = Boolean(window.api?.plugins)
+  // Why desktop, not installed themes: the slots also lead to more themes, so they show with none.
+  const showThemeSlots = !isWebClientLocation()
   const themeSlots = [
     {
       base: 'light' as const,
@@ -110,7 +111,7 @@ export function AppearanceInterfaceSection({
       >
         <SettingsRow
           label={themeLabel}
-          description={hasPluginHost ? <AppearanceBrowseThemesLink /> : undefined}
+          description={showThemeSlots ? <AppearanceBrowseThemesLink /> : undefined}
           control={
             <AppearanceThemeControl
               label={themeLabel}
@@ -122,7 +123,7 @@ export function AppearanceInterfaceSection({
         />
       </SearchableSetting>
 
-      {hasPluginHost
+      {showThemeSlots
         ? themeSlots.map((slot) => (
             <SearchableSetting
               key={slot.base}
