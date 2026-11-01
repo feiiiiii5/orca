@@ -1,5 +1,6 @@
 import type { PluginThemeBackground } from '../../../shared/plugins/artifacts/plugin-theme-background'
 import { useThemeBackgroundStore } from '@/store/theme-background'
+import { syncWindowMaterialWithThemeBackground } from './window-material-runtime'
 
 const SIZE: Record<NonNullable<PluginThemeBackground['size']>, [size: string, repeat: string]> = {
   cover: ['cover', 'no-repeat'],
@@ -26,6 +27,7 @@ export function applyThemeBackground(
     }
     delete root.dataset.themeBackground
     useThemeBackgroundStore.setState({ active: false })
+    syncWindowMaterialWithThemeBackground(false)
     return
   }
   const [size, repeat] = SIZE[background.size ?? 'cover']
@@ -37,4 +39,5 @@ export function applyThemeBackground(
   root.style.setProperty('--orca-theme-background-opacity', String(background.opacity ?? 1))
   root.dataset.themeBackground = ''
   useThemeBackgroundStore.setState({ active: true })
+  syncWindowMaterialWithThemeBackground(true)
 }
