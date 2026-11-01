@@ -13081,7 +13081,10 @@
           }
         },
         "AppearanceThemeControl": {
-          "useTerminalTheme": "Use its terminal colors"
+          "useTerminalTheme": "Use its terminal colors",
+          "moreThemes": "More themes",
+          "moreThemesLoading": "Loading themes…",
+          "installingTheme": "Installing {{value0}}…"
         },
         "AppearanceInterfaceSection": {
           "pluginIconTheme": {
